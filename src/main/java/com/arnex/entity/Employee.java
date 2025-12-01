@@ -34,4 +34,36 @@ public class Employee implements Serializable {
     this.lName = lName;
     this.yearsExperience = yearsExperience;
   }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getfName() {
+    return fName;
+  }
+
+  public void setfName(String fName) {
+    this.fName = fName;
+  }
+
+  public String getlName() {
+    return lName;
+  }
+
+  public void setlName(String lName) {
+    this.lName = lName;
+  }
+
+  public Integer getYearsExperience() {
+    return yearsExperience;
+  }
+
+  public void setYearsExperience(Integer yearsExperience) {
+    this.yearsExperience = yearsExperience;
+  }
 }
