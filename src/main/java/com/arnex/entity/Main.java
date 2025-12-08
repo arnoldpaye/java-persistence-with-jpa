@@ -1,5 +1,6 @@
 package com.arnex.entity;
 
+import com.arnex.repository.EmployeeRepositoryImpl;
 import jakarta.persistence.*;
 
 public class Main {
@@ -7,20 +8,21 @@ public class Main {
   public static void main(String[] args) {
     try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default")) {
       try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
-        System.out.println("Don't forget to launch Postgres before running this code!");
+        EmployeeRepositoryImpl employeeRepository = new EmployeeRepositoryImpl(entityManager);
+        // create employees
+        Employee employee1 = new Employee();
+        employee1.setfName("Mary");
+        employee1.setlName("Doe");
+        employee1.setYearsExperience(20);
 
-        // transaction
-        EntityTransaction transaction = entityManager.getTransaction();
-        try {
-          transaction.begin();
-          // Perform database operations here
-          transaction.commit();
-        } catch (Exception e) {
-          if (transaction.isActive()) {
-            transaction.rollback();
-          }
-          e.printStackTrace();
-        }
+        Employee employee2 = new Employee();
+        employee2.setfName("James");
+        employee2.setlName("Doe");
+        employee2.setYearsExperience(5);
+
+        // save employees
+        employeeRepository.save(employee1);
+        employeeRepository.save(employee2);
       }
     }
   }
