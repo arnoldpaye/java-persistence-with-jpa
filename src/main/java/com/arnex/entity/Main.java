@@ -1,21 +1,27 @@
 package com.arnex.entity;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.*;
 
 public class Main {
 
-  @PersistenceContext
-  EntityManager entityManager;
   public static void main(String[] args) {
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
-    EntityManager entityManager = entityManagerFactory.createEntityManager();
+    try (EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default")) {
+      try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+        System.out.println("Don't forget to launch Postgres before running this code!");
 
-    System.out.println("Don't forget to launch Postgres before running this code!");
-
-    entityManager.close();
-    entityManagerFactory.close();
+        // transaction
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+          transaction.begin();
+          // Perform database operations here
+          transaction.commit();
+        } catch (Exception e) {
+          if (transaction.isActive()) {
+            transaction.rollback();
+          }
+          e.printStackTrace();
+        }
+      }
+    }
   }
 }
