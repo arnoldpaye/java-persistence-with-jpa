@@ -36,6 +36,17 @@ public class Salary implements Serializable {
   public Salary() {
   }
 
+  public Salary(Long id, Company company, Integer level, Integer bonusPercentage, Double startingSalary, Double currentSalary, Boolean activeFlag, String title) {
+    this.id = id;
+    this.company = company;
+    this.level = level;
+    this.bonusPercentage = bonusPercentage;
+    this.startingSalary = startingSalary;
+    this.currentSalary = currentSalary;
+    this.activeFlag = activeFlag;
+    this.title = title;
+  }
+
   public Long getId() {
     return id;
   }
