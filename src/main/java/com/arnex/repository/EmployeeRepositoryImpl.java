@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class EmployeeRepositoryImpl implements EmployeeRepository {
-  private EntityManager entityManager;
+  private final EntityManager entityManager;
 
   public EmployeeRepositoryImpl(EntityManager entityManager) {
     this.entityManager = entityManager;
@@ -26,6 +26,9 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 
       return Optional.of(employee);
     } catch (Exception e) {
+      if (entityManager.getTransaction().isActive()) {
+        entityManager.getTransaction().rollback();
+      }
       e.printStackTrace();
     }
 
@@ -35,20 +38,28 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
   @Override
   public Optional<Employee> getEmployeeById(Long id) {
     Employee employee = entityManager.find(Employee.class, id);
-    return employee != null ? Optional.of(employee) : Optional.empty();
+    return Optional.ofNullable(employee);
   }
 
   @Override
   public void deleteEmployee(Employee employee) {
-    entityManager.getTransaction().begin();
+    try {
+      entityManager.getTransaction().begin();
 
-    if (entityManager.contains(employee)) {
-      entityManager.remove(employee);
-    } else {
-      entityManager.merge(employee);
+      if (entityManager.contains(employee)) {
+        entityManager.remove(employee);
+      } else {
+        entityManager.merge(employee);
+      }
+
+      entityManager.getTransaction().commit();
+    } catch (Exception e) {
+      if (entityManager.getTransaction().isActive()) {
+        entityManager.getTransaction().rollback();
+      }
+      e.printStackTrace();
     }
 
-    entityManager.getTransaction().commit();
   }
 
   @Override
