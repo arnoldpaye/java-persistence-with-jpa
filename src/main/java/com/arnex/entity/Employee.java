@@ -66,4 +66,15 @@ public class Employee implements Serializable {
   public void setYearsExperience(Integer yearsExperience) {
     this.yearsExperience = yearsExperience;
   }
+
+  @Override
+  public String toString() {
+    return "Employee{" +
+        "id=" + id +
+        ", fName='" + fName + '\'' +
+        ", lName='" + lName + '\'' +
+        ", yearsExperience=" + yearsExperience +
+        ", totalCompensation=" + totalCompensation +
+        '}';
+  }
 }
