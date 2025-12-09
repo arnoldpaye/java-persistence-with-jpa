@@ -1,5 +1,6 @@
-package com.arnex.entity;
+package com.arnex;
 
+import com.arnex.entity.Employee;
 import com.arnex.repository.EmployeeRepositoryImpl;
 import jakarta.persistence.*;
 
