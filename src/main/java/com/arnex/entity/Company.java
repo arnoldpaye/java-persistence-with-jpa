@@ -39,6 +39,10 @@ public class Company implements Serializable {
     this.country = country;
   }
 
+  public Company(String name) {
+    this.name = name;
+  }
+
   public Long getId() {
     return id;
   }
