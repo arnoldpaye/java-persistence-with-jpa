@@ -28,6 +28,9 @@ public class Employee implements Serializable {
   @Column
   private Company company;
 
+  @OneToOne(mappedBy = "employee")
+  private EmployeeProfile profile;
+
   @Transient
   private Double totalCompensation;
 

@@ -6,6 +6,7 @@
     <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
         <!-- Entity classes go here -->
         <class>com.arnex.entity.Employee</class>
+        <class>com.arnex.entity.EmployeeProfile</class>
         <class>com.arnex.entity.Company</class>
         <class>com.arnex.entity.Salary</class>
 
