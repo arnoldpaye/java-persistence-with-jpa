@@ -27,8 +27,9 @@ public class Employee implements Serializable {
   @Transient
   private Double totalCompensation;
 
-  @Column
-  private Company company;
+  @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  @JoinTable(name = "employee_company", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "company_id"))
+  private List<Company> companies = new ArrayList<>();
 
   @OneToOne(mappedBy = "employee")
   private EmployeeProfile profile;
@@ -41,12 +42,12 @@ public class Employee implements Serializable {
   public Employee() {
   }
 
-  public Employee(Long id, String firstName, String lastName, Integer yearsExperience, Company company, List<Salary> salaries) {
+  public Employee(Long id, String firstName, String lastName, Integer yearsExperience, List<Company> companies, List<Salary> salaries) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.yearsExperience = yearsExperience;
-    this.company = company;
+    this.companies = companies;
     this.salaries = salaries;
   }
 
@@ -82,12 +83,12 @@ public class Employee implements Serializable {
     this.yearsExperience = yearsExperience;
   }
 
-  public Company getCompany() {
-    return company;
+  public List<Company> getCompanies() {
+    return companies;
   }
 
-  public void setCompany(Company company) {
-    this.company = company;
+  public void setCompanies(List<Company> companies) {
+    this.companies = companies;
   }
 
   public List<Salary> getSalaries() {

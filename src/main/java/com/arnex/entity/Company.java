@@ -3,6 +3,8 @@ package com.arnex.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "companies")
@@ -27,6 +29,9 @@ public class Company implements Serializable {
   @Column
   private String country;
 
+  @ManyToMany(mappedBy = "companies")
+  private List<Employee> employees = new ArrayList<>();
+
   public Company() {
   }
 
@@ -41,6 +46,11 @@ public class Company implements Serializable {
 
   public Company(String name) {
     this.name = name;
+  }
+
+  public Company(String name, String country) {
+    this.name = name;
+    this.country = country;
   }
 
   public Long getId() {
