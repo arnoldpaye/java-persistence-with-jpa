@@ -14,10 +14,10 @@ public class Employee implements Serializable {
   private Long id;
 
   @Column
-  private String fName;
+  private String firstName;
 
   @Column
-  private String lName;
+  private String lastName;
 
   @Column
   private Integer yearsExperience;
@@ -37,10 +37,10 @@ public class Employee implements Serializable {
   public Employee() {
   }
 
-  public Employee(Long id, String fName, String lName, Integer yearsExperience, Company company, Salary salary) {
+  public Employee(Long id, String firstName, String lastName, Integer yearsExperience, Company company, Salary salary) {
     this.id = id;
-    this.fName = fName;
-    this.lName = lName;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.yearsExperience = yearsExperience;
     this.company = company;
     this.salary = salary;
@@ -54,20 +54,20 @@ public class Employee implements Serializable {
     this.id = id;
   }
 
-  public String getfName() {
-    return fName;
+  public String getFirstName() {
+    return firstName;
   }
 
-  public void setfName(String fName) {
-    this.fName = fName;
+  public void setFirstName(String fName) {
+    this.firstName = fName;
   }
 
-  public String getlName() {
-    return lName;
+  public String getLastName() {
+    return lastName;
   }
 
-  public void setlName(String lName) {
-    this.lName = lName;
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
   }
 
   public Integer getYearsExperience() {
