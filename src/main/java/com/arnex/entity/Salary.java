@@ -33,10 +33,13 @@ public class Salary implements Serializable {
   @Column
   private String title;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Employee employee;
+
   public Salary() {
   }
 
-  public Salary(Long id, Company company, Integer level, Integer bonusPercentage, Double startingSalary, Double currentSalary, Boolean activeFlag, String title) {
+  public Salary(Long id, Company company, Integer level, Integer bonusPercentage, Double startingSalary, Double currentSalary, Boolean activeFlag, String title, Employee employee) {
     this.id = id;
     this.company = company;
     this.level = level;
@@ -45,6 +48,7 @@ public class Salary implements Serializable {
     this.currentSalary = currentSalary;
     this.activeFlag = activeFlag;
     this.title = title;
+    this.employee = employee;
   }
 
   public Salary(Double currentSalary, Boolean activeFlag) {
@@ -114,5 +118,13 @@ public class Salary implements Serializable {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public Employee getEmployee() {
+    return employee;
+  }
+
+  public void setEmployee(Employee employee) {
+    this.employee = employee;
   }
 }
