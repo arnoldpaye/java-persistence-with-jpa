@@ -3,6 +3,8 @@ package com.arnex.entity;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "employees")
@@ -22,8 +24,8 @@ public class Employee implements Serializable {
   @Column
   private Integer yearsExperience;
 
-  @Column
-  private Salary salary;
+  @Transient
+  private Double totalCompensation;
 
   @Column
   private Company company;
@@ -31,19 +33,21 @@ public class Employee implements Serializable {
   @OneToOne(mappedBy = "employee")
   private EmployeeProfile profile;
 
-  @Transient
-  private Double totalCompensation;
+  @Column
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "employee_id")
+  private List<Salary> salaries = new ArrayList<>();
 
   public Employee() {
   }
 
-  public Employee(Long id, String firstName, String lastName, Integer yearsExperience, Company company, Salary salary) {
+  public Employee(Long id, String firstName, String lastName, Integer yearsExperience, Company company, List<Salary> salaries) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
     this.yearsExperience = yearsExperience;
     this.company = company;
-    this.salary = salary;
+    this.salaries = salaries;
   }
 
   public Long getId() {
@@ -78,19 +82,19 @@ public class Employee implements Serializable {
     this.yearsExperience = yearsExperience;
   }
 
-  public Salary getSalary() {
-    return salary;
-  }
-
-  public void setSalary(Salary salary) {
-    this.salary = salary;
-  }
-
   public Company getCompany() {
     return company;
   }
 
   public void setCompany(Company company) {
     this.company = company;
+  }
+
+  public List<Salary> getSalaries() {
+    return salaries;
+  }
+
+  public void setSalaries(List<Salary> salaries) {
+    this.salaries = salaries;
   }
 }
