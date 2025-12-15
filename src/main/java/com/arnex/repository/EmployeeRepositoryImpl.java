@@ -1,7 +1,9 @@
 package com.arnex.repository;
 
 import com.arnex.entity.Employee;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +16,13 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
   }
 
   @Override
+  @Transactional(
+      rollbackOn = IllegalArgumentException.class,
+      dontRollbackOn = EntityExistsException.class
+  )
   public Optional<Employee> save(Employee employee) {
     try {
-      entityManager.getTransaction().begin();
+      // entityManager.getTransaction().begin();
       if (employee.getId() == null) {
         if (employee.getProfile() != null) {
           entityManager.persist(employee.getProfile());
@@ -25,13 +31,13 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
       } else {
         employee = entityManager.merge(employee);
       }
-      entityManager.getTransaction().commit();
+      // entityManager.getTransaction().commit();
 
       return Optional.of(employee);
     } catch (Exception e) {
-      if (entityManager.getTransaction().isActive()) {
+      /* if (entityManager.getTransaction().isActive()) {
         entityManager.getTransaction().rollback();
-      }
+      } */
       e.printStackTrace();
     }
 
