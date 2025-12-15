@@ -39,6 +39,9 @@ public class Main {
         //save Employee
         employeeRepository.save(employee);
         employeeRepository.save(employee2);
+
+        // retrieve
+        employeeRepository.getEmployeesByExperience(10).forEach(System.out::println);
       }
     }
   }

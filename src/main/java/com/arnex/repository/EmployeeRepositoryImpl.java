@@ -3,6 +3,7 @@ package com.arnex.repository;
 import com.arnex.entity.Employee;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -16,13 +17,13 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
   }
 
   @Override
-  @Transactional(
+  /* @Transactional(
       rollbackOn = IllegalArgumentException.class,
       dontRollbackOn = EntityExistsException.class
-  )
+  ) */
   public Optional<Employee> save(Employee employee) {
     try {
-      // entityManager.getTransaction().begin();
+      entityManager.getTransaction().begin();
       if (employee.getId() == null) {
         if (employee.getProfile() != null) {
           entityManager.persist(employee.getProfile());
@@ -31,13 +32,13 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
       } else {
         employee = entityManager.merge(employee);
       }
-      // entityManager.getTransaction().commit();
+      entityManager.getTransaction().commit();
 
       return Optional.of(employee);
     } catch (Exception e) {
-      /* if (entityManager.getTransaction().isActive()) {
+      if (entityManager.getTransaction().isActive()) {
         entityManager.getTransaction().rollback();
-      } */
+      }
       e.printStackTrace();
     }
 
@@ -69,8 +70,10 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
   }
 
   @Override
-  public List<Employee> getEmployeesByExperience(Integer yearExperience) {
-    return List.of();
+  public List<Employee> getEmployeesByExperience(Integer yearsExperience) {
+    Query query = entityManager.createQuery("SELECT e FROM Employee as e WHERE e.yearsExperience > :yearsExperience ORDER BY e.lastName");
+    query.setParameter("yearsExperience", yearsExperience);
+    return query.getResultList();
   }
 
   @Override
