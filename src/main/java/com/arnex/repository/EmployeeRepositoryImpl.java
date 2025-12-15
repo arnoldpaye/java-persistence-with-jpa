@@ -51,21 +51,18 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
   }
 
   @Override
+  @Transactional(
+      rollbackOn = IllegalArgumentException.class,
+      dontRollbackOn = EntityExistsException.class
+  )
   public void deleteEmployee(Employee employee) {
     try {
-      entityManager.getTransaction().begin();
-
       if (entityManager.contains(employee)) {
         entityManager.remove(employee);
       } else {
         entityManager.merge(employee);
       }
-
-      entityManager.getTransaction().commit();
     } catch (Exception e) {
-      if (entityManager.getTransaction().isActive()) {
-        entityManager.getTransaction().rollback();
-      }
       e.printStackTrace();
     }
 

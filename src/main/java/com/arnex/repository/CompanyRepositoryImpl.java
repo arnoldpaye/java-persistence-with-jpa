@@ -1,7 +1,9 @@
 package com.arnex.repository;
 
 import com.arnex.entity.Company;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 import java.util.Optional;
 
@@ -13,21 +15,20 @@ public class CompanyRepositoryImpl implements CompanyRepository {
   }
 
   @Override
+  @Transactional(
+      rollbackOn = IllegalArgumentException.class,
+      dontRollbackOn = EntityExistsException.class
+  )
   public Optional<Company> save(Company company) {
     try {
-      entityManager.getTransaction().begin();
       if (company.getId() == null) {
         entityManager.persist(company);
       } else {
         company = entityManager.merge(company);
       }
-      entityManager.getTransaction().commit();
 
       return Optional.of(company);
     } catch (Exception e) {
-      if (entityManager.getTransaction().isActive()) {
-        entityManager.getTransaction().rollback();
-      }
       e.printStackTrace();
     }
 
@@ -41,21 +42,18 @@ public class CompanyRepositoryImpl implements CompanyRepository {
   }
 
   @Override
+  @Transactional(
+      rollbackOn = IllegalArgumentException.class,
+      dontRollbackOn = EntityExistsException.class
+  )
   public void deleteCompany(Company company) {
     try {
-      entityManager.getTransaction().begin();
-
       if (entityManager.contains(company)) {
         entityManager.remove(company);
       } else {
         entityManager.merge(company);
       }
-
-      entityManager.getTransaction().commit();
     } catch (Exception e) {
-      if (entityManager.getTransaction().isActive()) {
-        entityManager.getTransaction().rollback();
-      }
       e.printStackTrace();
     }
   }

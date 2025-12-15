@@ -28,7 +28,7 @@ public class Main {
         employee.setCompanies(generateCompanies());
         employee2.setCompanies(generateCompanies());
 
-        //create an EmployeeProfile and associate it to an Employee
+        //create an EmployeeProfile and associate it with an Employee
         employee.setProfile(new EmployeeProfile("userName", "password!", "email@email.com", employee, "Software Engineer"));
         employee2.setProfile(new EmployeeProfile("jDoe", "password234", "johndoe@email.com", employee2, "Project Manager"));
 

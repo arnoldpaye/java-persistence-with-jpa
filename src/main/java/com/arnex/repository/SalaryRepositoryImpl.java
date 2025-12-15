@@ -1,7 +1,9 @@
 package com.arnex.repository;
 
 import com.arnex.entity.Salary;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 import java.util.Optional;
 
@@ -13,21 +15,20 @@ public class SalaryRepositoryImpl implements SalaryRepository {
   }
 
   @Override
+  @Transactional(
+      rollbackOn = IllegalArgumentException.class,
+      dontRollbackOn = EntityExistsException.class
+  )
   public Optional<Salary> save(Salary salary) {
     try {
-      entityManager.getTransaction().begin();
       if (salary.getId() == null) {
         entityManager.persist(salary);
       } else {
         salary = entityManager.merge(salary);
       }
-      entityManager.getTransaction().commit();
 
       return Optional.of(salary);
     } catch (Exception e) {
-      if (entityManager.getTransaction().isActive()) {
-        entityManager.getTransaction().rollback();
-      }
       e.printStackTrace();
     }
 
@@ -41,21 +42,18 @@ public class SalaryRepositoryImpl implements SalaryRepository {
   }
 
   @Override
+  @Transactional(
+      rollbackOn = IllegalArgumentException.class,
+      dontRollbackOn = EntityExistsException.class
+  )
   public void deleteSalary(Salary salary) {
     try {
-      entityManager.getTransaction().begin();
-
       if (entityManager.contains(salary)) {
         entityManager.remove(salary);
       } else {
         entityManager.merge(salary);
       }
-
-      entityManager.getTransaction().commit();
     } catch (Exception e) {
-      if (entityManager.getTransaction().isActive()) {
-        entityManager.getTransaction().rollback();
-      }
       e.printStackTrace();
     }
   }
