@@ -9,6 +9,8 @@ import java.util.List;
 @Entity
 @Table(name = "employees")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@Inheritance(strategy = InheritanceType.JOINED)
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Employee implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,6 +51,14 @@ public class Employee implements Serializable {
     this.yearsExperience = yearsExperience;
     this.companies = companies;
     this.salaries = salaries;
+  }
+
+  public Employee(Long id, String firstName, String lastName, Integer yearsExperience, List<Company> companies) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.yearsExperience = yearsExperience;
+    this.companies = companies;
   }
 
   public Long getId() {
@@ -98,4 +108,13 @@ public class Employee implements Serializable {
   public void setSalaries(List<Salary> salaries) {
     this.salaries = salaries;
   }
+
+  public EmployeeProfile getProfile() {
+    return profile;
+  }
+
+  public void setProfile(EmployeeProfile profile) {
+    this.profile = profile;
+  }
 }
+
