@@ -78,6 +78,9 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 
   @Override
   public List<Employee> getEmployeesByExperienceNativeQuery(Integer yearsExperience) {
-    return List.of();
+    //Note: createNativeQuery is a native SQL query which will return the raw data from the database, not the Entity, need to include class name
+    Query nativeQuery = entityManager.createNativeQuery("SELECT * FROM employees WHERE yearsExperience > :yearsExperience ORDER BY lastName", Employee.class);
+    nativeQuery.setParameter("yearsExperience", yearsExperience);
+    return nativeQuery.getResultList();
   }
 }
