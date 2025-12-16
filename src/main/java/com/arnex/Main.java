@@ -41,7 +41,7 @@ public class Main {
         employeeRepository.save(employee2);
 
         // retrieve
-        employeeRepository.getEmployeesByExperienceNativeQuery(10).forEach(System.out::println);
+        employeeRepository.getEmployeesByExperienceCriteriaQuery(10).forEach(System.out::println);
       }
     }
   }

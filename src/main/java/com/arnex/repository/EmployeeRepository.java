@@ -11,4 +11,5 @@ public interface EmployeeRepository {
   void deleteEmployee(Employee employee);
   List<Employee> getEmployeesByExperience(Integer yearExperience);
   List<Employee> getEmployeesByExperienceNativeQuery(Integer yearsExperience);
+  List<Employee> getEmployeesByExperienceCriteriaQuery(Integer yearsExperience);
 }

@@ -4,6 +4,9 @@ import com.arnex.entity.Employee;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -78,9 +81,21 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
 
   @Override
   public List<Employee> getEmployeesByExperienceNativeQuery(Integer yearsExperience) {
-    //Note: createNativeQuery is a native SQL query which will return the raw data from the database, not the Entity, need to include class name
+    //Note: createNativeQuery is a native SQL query that will return the raw data from the database, not the Entity, need to include class name
     Query nativeQuery = entityManager.createNativeQuery("SELECT * FROM employees WHERE yearsExperience > :yearsExperience ORDER BY lastName", Employee.class);
     nativeQuery.setParameter("yearsExperience", yearsExperience);
     return nativeQuery.getResultList();
+  }
+
+  @Override
+  public List<Employee> getEmployeesByExperienceCriteriaQuery(Integer yearsExperience) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Employee> criteriaQuery = criteriaBuilder.createQuery(Employee.class);
+    Root<Employee> employeeRoot = criteriaQuery.from(Employee.class);
+
+    return entityManager
+        .createQuery(criteriaQuery.select(employeeRoot)
+            .where(criteriaBuilder.greaterThan(employeeRoot.get("yearsExperience"), yearsExperience)))
+        .getResultList();
   }
 }
