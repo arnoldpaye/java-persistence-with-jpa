@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface EmployeeRepository {
   Optional<Employee> save(Employee employee);
   Optional<Employee> getEmployeeById(Long id);
+  Optional<Employee> getEmployeeByFullName(String firstName, String lastName);
   void deleteEmployee(Employee employee);
   List<Employee> getEmployeesByExperience(Integer yearExperience);
   List<Employee> getEmployeesByExperienceNativeQuery(Integer yearsExperience);

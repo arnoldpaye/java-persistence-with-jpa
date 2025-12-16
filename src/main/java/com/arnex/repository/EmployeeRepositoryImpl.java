@@ -4,6 +4,7 @@ import com.arnex.entity.Employee;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -51,6 +52,22 @@ public class EmployeeRepositoryImpl implements EmployeeRepository {
   @Override
   public Optional<Employee> getEmployeeById(Long id) {
     Employee employee = entityManager.find(Employee.class, id);
+    return Optional.ofNullable(employee);
+  }
+
+  @Override
+  public Optional<Employee> getEmployeeByFullName(String firstName, String lastName) {
+    TypedQuery<Employee> query = entityManager.createQuery(
+        "SELECT e FROM Employee e WHERE e.firstName = :firstName AND e.lastName = :lastName",
+        Employee.class);
+    query.setParameter("firstName", firstName);
+    query.setParameter("lastName", lastName);
+
+    /*List<Employee> results = query.getResultList();
+    return results.stream().findFirst();*/
+
+    Employee employee = query.getSingleResult();
+    // return employee != null ? Optional.of(employee) : Optional.empty();
     return Optional.ofNullable(employee);
   }
 

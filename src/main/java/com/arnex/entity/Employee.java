@@ -116,5 +116,19 @@ public class Employee implements Serializable {
   public void setProfile(EmployeeProfile profile) {
     this.profile = profile;
   }
+
+  @Override
+  public String toString() {
+    return "Employee{" +
+        "id=" + id +
+        ", firstName='" + firstName + '\'' +
+        ", lastName='" + lastName + '\'' +
+        ", yearsExperience=" + yearsExperience +
+        ", totalCompensation=" + totalCompensation +
+        ", companies=" + companies +
+        ", profile=" + profile +
+        ", salaries=" + salaries +
+        '}';
+  }
 }
 

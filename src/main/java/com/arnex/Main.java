@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
 
@@ -42,6 +43,9 @@ public class Main {
 
         // retrieve
         employeeRepository.getEmployeesByExperienceCriteriaQuery(10).forEach(System.out::println);
+
+        // find an employee by full name
+        employeeRepository.getEmployeeByFullName("John", "Doe").ifPresent(System.out::println);
       }
     }
   }
